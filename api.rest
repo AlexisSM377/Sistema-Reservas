@@ -1,0 +1,53 @@
+### Variables
+@baseUrl = http://localhost:3000
+@contentType = application/json
+
+### Crear un nuevo usuario
+POST {{baseUrl}}/users
+Content-Type: {{contentType}}
+
+{
+  "name": "Alexis",
+  "email": "alexis@example.com",
+  "password": "password123",
+  "role": "admin"
+}
+
+### Crear usuario sin nombre (debe fallar)
+POST {{baseUrl}}/users
+Content-Type: {{contentType}}
+
+{
+  "email": "test@example.com",
+  "password": "password123"
+}
+
+### Crear usuario con email inválido (debe fallar)
+POST {{baseUrl}}/users
+Content-Type: {{contentType}}
+
+{
+  "name": "Test User",
+  "email": "invalid-email",
+  "password": "password123"
+}
+
+### Crear usuario con contraseña corta (debe fallar)
+POST {{baseUrl}}/users
+Content-Type: {{contentType}}
+
+{
+  "name": "Test User",
+  "email": "test2@example.com",
+  "password": "123"
+}
+
+### Crear usuario duplicado (debe fallar)
+POST {{baseUrl}}/users
+Content-Type: {{contentType}}
+
+{
+  "name": "Juan Pérez",
+  "email": "juan@example.com",
+  "password": "password123"
+}
