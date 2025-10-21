@@ -13,7 +13,9 @@ export class UserMapper {
   }
   static toOrm(user: User): UserOrmEntity {
     const orm = new UserOrmEntity();
-    orm.id = user.id;
+    if (user.id !== null) {
+      orm.id = user.id;
+    }
     orm.name = user.name;
     orm.email = user.email;
     orm.password = user.password;
