@@ -1,9 +1,13 @@
 export class User {
   constructor(
-    public readonly id: number,
+    public id: string | null,
     public name: string,
     public email: string,
     public password: string,
-    public role: 'user' | 'admin' = 'user',
+    public role: 'admin' | 'user' = 'user',
   ) {}
+
+  static create(name: string, email: string, password: string) {
+    return new User(null, name, email, password, 'user');
+  }
 }

@@ -1,5 +1,5 @@
 import { InjectRepository } from '@nestjs/typeorm';
-import { IUserRepository } from '../../domain/repositories/user.repository';
+import { UserRepository } from '../../domain/repositories/user.repository';
 import { UserOrmEntity } from '../entities/user.orm-entity';
 import { Repository } from 'typeorm';
 import { Injectable } from '@nestjs/common';
@@ -7,20 +7,20 @@ import { User } from '../../domain/entities/user.entity';
 import { UserMapper } from '../mappers/user.mapper';
 
 @Injectable()
-export class UserRepositoryImpl implements IUserRepository {
+export class UserRepositoryImpl implements UserRepository {
   constructor(
     @InjectRepository(UserOrmEntity)
-    private readonly repo: Repository<UserOrmEntity>,
+    private readonly ormRepo: Repository<UserOrmEntity>,
   ) {}
 
   async findByEmail(email: string): Promise<User | null> {
-    const ormUser = await this.repo.findOne({ where: { email } });
+    const ormUser = await this.ormRepo.findOne({ where: { email } });
     return ormUser ? UserMapper.toDomain(ormUser) : null;
   }
 
-  async create(user: User): Promise<User> {
-    const ormUser = this.repo.create(UserMapper.toOrm(user));
-    const saved = await this.repo.save(ormUser);
+  async save(user: User): Promise<User> {
+    const entity = this.ormRepo.create(UserMapper.toOrm(user));
+    const saved = await this.ormRepo.save(entity);
     return UserMapper.toDomain(saved);
   }
 }

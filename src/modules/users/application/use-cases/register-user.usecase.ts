@@ -4,9 +4,9 @@ import { UserRepository } from '../../domain/repositories/user.repository';
 import * as bcrypt from 'bcrypt';
 
 @Injectable()
-export class CreateUserService {
+export class RegisterUserUseCase {
   constructor(
-    @Inject('IUserRepository')
+    @Inject('UserRepository')
     private readonly userRepo: UserRepository,
   ) {}
 
@@ -14,8 +14,9 @@ export class CreateUserService {
     const exists = await this.userRepo.findByEmail(email);
     if (exists) throw new ConflictException('El email ya está en uso');
 
-    const hash = await bcrypt.hash(password, 10);
-    const user = new User('', name, email, hash);
-    return await this.userRepo.save(user);
+    const hashed = await bcrypt.hash(password, 10);
+    const user = User.create(name, email, hashed);
+
+    return this.userRepo.save(user);
   }
 }

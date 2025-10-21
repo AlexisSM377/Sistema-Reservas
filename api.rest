@@ -1,16 +1,15 @@
 ### Variables
-@baseUrl = http://localhost:3000
+@baseUrl = http://localhost:3001
 @contentType = application/json
 
 ### Crear un nuevo usuario
-POST {{baseUrl}}/users
+POST {{baseUrl}}/users/register
 Content-Type: {{contentType}}
 
 {
-  "name": "Alexis",
-  "email": "alexis@example.com",
-  "password": "password123",
-  "role": "admin"
+  "name": "Alexis M",
+  "email": "alexisg@example.com",
+  "password": "password123"
 }
 
 ### Crear usuario sin nombre (debe fallar)
