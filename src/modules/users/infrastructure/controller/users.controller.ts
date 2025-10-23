@@ -1,6 +1,7 @@
-import { Body, Controller, Post } from '@nestjs/common';
+import { Body, Controller, Get, Post, Req, UseGuards } from '@nestjs/common';
 import { CreateUserDto } from '../../application/dto/create-user.dto';
 import { RegisterUserUseCase } from '../../application/use-cases/register-user.usecase';
+import { JwtAuthGuard } from 'src/modules/auth/infrastructure/guards/jwt-auth.guard';
 
 @Controller('users')
 export class UsersController {
@@ -14,5 +15,11 @@ export class UsersController {
       dto.password,
     );
     return { message: 'Usuario registrado con éxito', user };
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Get('me')
+  getProfile(@Req() req) {
+    return req.user;
   }
 }
